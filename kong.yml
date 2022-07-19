@@ -1,0 +1,36 @@
+_format_version: '2.1'
+_transform: true
+
+services:
+- name: api
+  url: https://httpbin.org/
+  routes:
+  - name: api-route
+    paths:
+    - /anything
+    strip_path: false
+  plugins:
+  - name: openid-connect
+    config:
+      auth_methods: 
+      - authorization_code
+      - session
+      issuer: https://curity.kong.lan:8443/oauth/v2/oauth-anonymous
+      authorization_endpoint: https://curity.kong.lan:8443/oauth/v2/oauth-authorize
+      token_endpoint: https://curity.kong.lan:8443/oauth/v2/oauth-token
+      introspection_endpoint: https://curity.kong.lan:8443/oauth/v2/oauth-introspect
+      client_id: 
+      - gateway-client
+      client_secret: 
+      - Password1
+      scopes:
+      - openid
+      - email
+      - address
+      verify_signature: false
+      upstream_access_token_header: access-token
+      upstream_id_token_header: id-token
+      upstream_introspection_header: x-intro
+      upstream_introspection_jwt_header: x-intro-jwt
+      scopes_required:
+      - openid

@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  curity:
+    image: curity.azurecr.io/curity/idsvr:latest
+    container_name: curity
+    ports:
+    - "6749:6749"
+    - "8443:8443"
+    environment:
+      PASSWORD: Passw0rd1! ##admin user password
+  kong:
+    image: kong/kong-gateway:2.8.1.1-alpine
+    container_name: kong
+    volumes:
+      - ./kong.yml:/usr/local/kong/declarative/kong.yml
+    ports:
+     - "8000:8000"
+     - "8001:8001"
+     - "8002:8002"
+     - "8442:8443"
+     - "8444:8444"
+    environment:
+     - KONG_DATABASE=off
+     - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
+     - KONG_LOG_LEVEL=debug
+     - KONG_PROXY_ACCESS_LOG=/dev/stdout
+     - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+     - KONG_PROXY_ERROR_LOG=/dev/stderr
+     - KONG_ADMIN_ERROR_LOG=/dev/stderr
+     - KONG_PROXY_LISTEN=0.0.0.0:8000, 0.0.0.0:8443 ssl
+     - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+     - KONG_LICENSE_DATA=${KONG_LICENSE_DATA}
