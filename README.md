@@ -2,6 +2,8 @@
 
 Create hosts entry for curity.kong.lan and proxy.kong.lan 
 
+Get a curity license
+
 ### Upload kong license as openid-connect plugin is enterprise plugin
 Upload the kong license to environment variable 
 
